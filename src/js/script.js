@@ -1,6 +1,8 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
+import galaxy from '../img/galaxy.jpg'
+import clouds from '../img/clouds.jpg'
 
 const renderer = new THREE.WebGLRenderer()
 
@@ -74,6 +76,25 @@ spotLight.angle = 0.2
 
 const spotLightHelper = new THREE.SpotLightHelper(spotLight)
 scene.add(spotLightHelper)
+
+// scene.fog = new THREE.Fog(0xffffff, 0, 100)
+scene.fog = new THREE.FogExp2(0xffffff, 0.01)
+
+// renderer.setClearColor(0xffea00)
+
+const textureLoader = new THREE.TextureLoader()
+// scene.background = textureLoader.load(galaxy)
+
+const cubeTextureLoader = new THREE.CubeTextureLoader()
+scene.background = cubeTextureLoader.load([
+    galaxy, galaxy, galaxy, galaxy, galaxy, galaxy
+])
+
+const box2Geometry = new THREE.BoxGeometry(4, 4, 4)
+const box2Material = new THREE.MeshBasicMaterial({ map: textureLoader.load(clouds) })
+const box2 = new THREE.Mesh(box2Geometry, box2Material)
+// scene.add(box2)
+// box2.position.set(0, 15, 10)
 
 const gui = new dat.GUI()
 const options = {
